@@ -5,6 +5,21 @@ document.getElementById("addbtn").addEventListener("click", () => onClickAdd());
 // テキストボックスを取得し、初期化する
 const onClickAdd = () => {
   const inputText = document.getElementById("addtxt").value;
+  createIncompleatList(inputText);
+};
+
+// 未完了リストから指定の要素を削除
+const deleteFromIncompleatList = (target) => {
+  document.getElementById("incompleat-list").removeChild(target);
+};
+
+// 完了リストから指定の要素を削除
+const deleteFromCompleatList = (target) => {
+  document.getElementById("compleat-list").removeChild(target);
+};
+
+//　未完了のリストを作成する関数
+const createIncompleatList = (text) => {
   document.getElementById("addtxt").value = "";
 
   // div
@@ -13,7 +28,7 @@ const onClickAdd = () => {
 
   // li
   const li = document.createElement("li");
-  li.innerText = inputText;
+  li.innerText = text;
 
   // buttonタグ
   const completeButton = document.createElement("button");
@@ -37,6 +52,14 @@ const onClickAdd = () => {
     // buttonタグ
     const backButton = document.createElement("button");
     backButton.innerText = "戻る";
+    backButton.addEventListener("click", () => {
+      deleteFromCompleatList(backButton.parentNode);
+
+      //todoリストに追加する
+      const text = backButton.parentNode.firstChild.innerText;
+
+      createIncompleatList(text);
+    });
 
     addTarget.appendChild(li);
     addTarget.appendChild(backButton);
@@ -58,9 +81,4 @@ const onClickAdd = () => {
   div.appendChild(deleteButton);
 
   document.getElementById("incompleat-list").appendChild(div);
-};
-
-// 未完了リストから指定の要素を削除
-const deleteFromIncompleatList = (target) => {
-  document.getElementById("incompleat-list").removeChild(target);
 };
